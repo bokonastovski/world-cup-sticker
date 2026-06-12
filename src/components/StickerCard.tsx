@@ -15,7 +15,7 @@ export default function StickerCard({ number, found, onClick }: Props) {
     rounded-md
     font-semibold
     transition
-      ${found ? "bg-red-500 text-white" : "bg-zinc-800 text-white"}
+      ${found ? "bg-green-500 text-white" : "bg-red-800 text-white"}
       
       `}
     >
