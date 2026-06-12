@@ -28,13 +28,11 @@ export default function Home() {
   };
 
   return (
-    <main className="p-8">
-      <h1 className="text-4xl font-bold mb-8">World Cup 2026 Stickers</h1>
-
+    <main className="p-2">
       {Object.entries(teams).map(([team, stickers]) => (
-        <div key={team} className="mb-10">
+        <div key={team} className="mb-1">
           <div className="flex flex-wrap gap-2">
-            <h2 className="text-2xl font-bold mb-4">{team}</h2>
+            <h2 className="text-2xl font-bold">{team}</h2>
             {stickers.map((sticker) => {
               const uniqueId = Number(`${team.charCodeAt(0)}${sticker}`);
 
