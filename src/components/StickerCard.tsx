@@ -9,9 +9,14 @@ export default function StickerCard({ number, found, onClick }: Props) {
     <button
       onClick={onClick}
       className={`
-      w-12 h-12 rounded-lg font-bold
-      ${found ? "bg-green-500" : "bg-red-500"}
-      text-white
+      w-7 h-7
+    text-xs
+    flex items-center justify-center
+    rounded-md
+    font-semibold
+    transition
+      ${found ? "bg-red-500 text-white" : "bg-zinc-800 text-white"}
+      
       `}
     >
       {number}
