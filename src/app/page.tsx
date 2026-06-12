@@ -30,9 +30,12 @@ export default function Home() {
   return (
     <main className="p-2">
       {Object.entries(teams).map(([team, stickers]) => (
-        <div key={team} className="mb-1">
-          <div className="flex flex-wrap gap-2">
-            <h2 className="text-2xl font-bold">{team}</h2>
+        <div key={team} className="grid grid-cols-[50px_1fr] items-center mb-1">
+          {/* Team label */}
+          <h2 className="text-sm font-bold">{team}</h2>
+
+          {/* Stickers grid */}
+          <div className="grid grid-cols-10 gap-1">
             {stickers.map((sticker) => {
               const uniqueId = Number(`${team.charCodeAt(0)}${sticker}`);
 
