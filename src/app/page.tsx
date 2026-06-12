@@ -5,7 +5,7 @@ import { teams } from "@/data/stickers";
 import StickerCard from "@/components/StickerCard";
 
 export default function Home() {
-  const [found, setFound] = useState<number[]>([]);
+  const [found, setFound] = useState<string[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("found");
@@ -14,8 +14,8 @@ export default function Home() {
     }
   }, []);
 
-  const toggleSticker = (id: number) => {
-    let updated;
+  const toggleSticker = (id: string) => {
+    let updated: string[];
 
     if (found.includes(id)) {
       updated = found.filter((x) => x !== id);
@@ -37,7 +37,7 @@ export default function Home() {
           {/* Stickers grid */}
           <div className="grid grid-cols-10 gap-1">
             {stickers.map((sticker) => {
-              const uniqueId = Number(`${team.charCodeAt(0)}${sticker}`);
+              const uniqueId = `${team}-${sticker}`;
 
               return (
                 <StickerCard
