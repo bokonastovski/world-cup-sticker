@@ -27,14 +27,29 @@ export default function Home() {
     localStorage.setItem("found", JSON.stringify(updated));
   };
 
+  const totalStickers = Object.values(teams).reduce(
+    (sum, stickers) => sum + stickers.length,
+    0,
+  );
+
+  const missingStickers = totalStickers - found.length;
+
   return (
     <main className="p-2">
+      {/* Counter */}
+      <div className="sticky top-0 z-50 bg-white border-b mb-3 p-3">
+        <h1 className="text-xl font-bold">
+          Missing Stickers: {missingStickers}
+        </h1>
+        <p className="text-sm text-gray-500">
+          Found: {found.length} / {totalStickers}
+        </p>
+      </div>
+
       {Object.entries(teams).map(([team, stickers]) => (
         <div key={team} className="grid grid-cols-[50px_1fr] items-center mb-1">
-          {/* Team label */}
           <h2 className="text-sm font-bold">{team}</h2>
 
-          {/* Stickers grid */}
           <div className="grid grid-cols-10 gap-1">
             {stickers.map((sticker) => {
               const uniqueId = `${team}-${sticker}`;
