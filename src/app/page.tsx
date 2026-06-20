@@ -4,11 +4,23 @@ import { useEffect, useState } from "react";
 import { teams } from "@/data/stickers";
 import StickerCard from "@/components/StickerCard";
 
+const albumTotals: Record<string, number> = {
+  FIFA_World_Cup_2006: 597,
+  UEFA_Euro_2008: 535,
+  UEFA_Euro_2012: 540,
+  UEFA_Euro_2016: 680,
+  UEFA_Euro_2020: 678,
+  FIFA_World_Cup_2022: 670,
+  UEFA_Euro_2024: 728,
+  FIFA_World_Cup_2026: 980,
+};
+
 export default function Home() {
   const [found, setFound] = useState<string[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("found");
+
     if (saved) {
       setFound(JSON.parse(saved));
     }
@@ -27,38 +39,62 @@ export default function Home() {
     localStorage.setItem("found", JSON.stringify(updated));
   };
 
-  const totalStickers = Object.values(teams).reduce(
-    (sum, stickers) => sum + stickers.length,
-    0,
-  );
-
-  const missingStickers = totalStickers - found.length;
-
   return (
-    <main className="p-2">
-      <h1 className="text-xl font-bold">Missing Stickers: {missingStickers}</h1>
-      {Object.entries(teams).map(([team, stickers]) => (
-        <div key={team} className="grid grid-cols-[50px_1fr] items-center mb-1">
-          {/* Team label */}
-          <h2 className="text-sm font-bold">{team}</h2>
+    <main className="p-3">
+      {/* Album counters */}
+      <div className="mb-5">
+        {Object.entries(teams).map(([album, stickers]) => {
+          const missing = stickers.filter(
+            (sticker) => !found.includes(`${album}-${sticker}`),
+          ).length;
 
-          {/* Stickers grid */}
-          <div className="grid grid-cols-10 gap-1">
-            {stickers.map((sticker) => {
-              const uniqueId = `${team}-${sticker}`;
+          return (
+            <h2 key={album} className="text-sm font-bold">
+              {album.replaceAll("_", " ")} missing stickers {missing} out of{" "}
+              {albumTotals[album]}
+            </h2>
+          );
+        })}
+      </div>
 
-              return (
-                <StickerCard
-                  key={uniqueId}
-                  number={sticker}
-                  found={found.includes(uniqueId)}
-                  onClick={() => toggleSticker(uniqueId)}
-                />
-              );
-            })}
+      {/* Stickers */}
+      {Object.entries(teams).map(([album, stickers]) => {
+        const missing = stickers.filter(
+          (sticker) => !found.includes(`${album}-${sticker}`),
+        ).length;
+
+        return (
+          <div key={album} className="mb-4">
+            <h2 className="text-sm font-bold mb-2">
+              {album.replaceAll("_", " ")}
+            </h2>
+
+            {missing === 0 ? (
+              <button
+                disabled
+                className="px-3 py-1 bg-green-500 text-white rounded-md text-sm font-bold cursor-not-allowed"
+              >
+                Album is full ✅
+              </button>
+            ) : (
+              <div className="flex flex-wrap gap-1">
+                {stickers.map((sticker) => {
+                  const uniqueId = `${album}-${sticker}`;
+
+                  return (
+                    <StickerCard
+                      key={uniqueId}
+                      number={sticker}
+                      found={found.includes(uniqueId)}
+                      onClick={() => toggleSticker(uniqueId)}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </main>
   );
 }
